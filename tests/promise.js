@@ -21,13 +21,31 @@ describe('When promise state is fulfilled',function(){
 	// });
 
 	it("should not transition to any other state",function(onComplete){
-		var promise = Promise.create(function(cb){setTimeout(function(){
-			console.log("Do Something");
-			//cb();
-			promise.invoke();
-		},500);}).then(function(){console.log("after")}).then(function(){console.log("after after")});
+		var promise = Promise.create(function(cb){
+			setTimeout(function(){
+				console.log("Do Something");
+				console.log(cb);
+
+				if(cb)
+					cb(5);
+
+			},100);
+		}).then(function(value){return value+1;})
+			.then(function(value){return value+1;})
+			.then(function(value){return value+1;});
+			// .then(return new Promise.create(function(cb){
+			// 		setTimeout(function(){
+			// 			console.log("Inner Promise");
+			// 			console.log(cb);
+
+			// 			if(cb)
+			// 				cb(5);
+
+			// 		},100);
+			// 	}));
 
 		promise.invoke();
+
 		setTimeout(function(){
 			promise.isFulfilled().should.be.eql(true);
 			promise.isPending().should.be.false;
