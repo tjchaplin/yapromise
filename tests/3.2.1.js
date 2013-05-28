@@ -1,12 +1,22 @@
 var should = require('should');
-var Promise = require("../lib/promise.js");
-var promiseState = require("../lib/promiseState.js");
+var Action = require("../lib/action.js");
 
 "use strict";
 
-var promise = Promise.create();
-var fulfilled = function(value){Promise.create().fulfilled(value);};;
-var rejected = function(value){promise.rejected(value);};;
+var promise = { 
+    fulfilled : function(value){
+        var action = Action.create(value);
+        action.actionState.toFulfilled();
+        return action;
+    },
+    rejected : function(value){
+        var action = Action.create(value);
+        action.actionState.toRejected();
+        return action;
+    }
+};
+var fulfilled = promise.fulfilled;
+var rejected = promise.rejected;
 
 var dummy = { dummy: "dummy" }; // we fulfill or reject with this when we don't intend to test against it
 
@@ -14,7 +24,7 @@ describe("3.2.1: Both `onFulfilled` and `onRejected` are optional arguments.", f
     describe("3.2.1.1: If `onFulfilled` is not a function, it must be ignored.", function () {
         function testNonFunction(nonFunction, stringRepresentation) {
             specify("`onFulfilled` is " + stringRepresentation, function (done) {
-                Promise.create().rejected(dummy).then(nonFunction, function () {
+                promise.rejected(dummy).then(nonFunction, function () {
                     done();
                 });
             });
@@ -27,20 +37,20 @@ describe("3.2.1: Both `onFulfilled` and `onRejected` are optional arguments.", f
         testNonFunction({}, "an object");
     });
 
-    // describe("3.2.1.2: If `onRejected` is not a function, it must be ignored.", function () {
-    //     function testNonFunction(nonFunction, stringRepresentation) {
-    //         specify("`onRejected` is " + stringRepresentation, function (done) {
-    //             var promise = Promise.create().fulfilled(dummy).then(function () {
-    //                 console.log("complete");
-    //                 done();
-    //             }, nonFunction);
-    //         });
-    //     }
+    describe("3.2.1.2: If `onRejected` is not a function, it must be ignored.", function () {
+        function testNonFunction(nonFunction, stringRepresentation) {
+            specify("`onRejected` is " + stringRepresentation, function (done) {
+                promise.fulfilled(dummy).then(function () {
+                    var self = this;
+                    done();
+                }, nonFunction);
+            });
+        }
 
-    //     testNonFunction(undefined, "`undefined`");
-    //     testNonFunction(null, "`null`");
-    //     testNonFunction(false, "`false`");
-    //     testNonFunction(5, "`5`");
-    //     testNonFunction({}, "an object");
-    // });
+        testNonFunction(undefined, "`undefined`");
+        testNonFunction(null, "`null`");
+        testNonFunction(false, "`false`");
+        testNonFunction(5, "`5`");
+        testNonFunction({}, "an object");
+    });
 });

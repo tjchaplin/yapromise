@@ -3,6 +3,47 @@
 var assert = require("assert");
 var testFulfilled = require("./helpers/testThreeCases").testFulfilled;
 var testRejected = require("./helpers/testThreeCases").testRejected;
+var Action = require("../lib/action.js");
+var promise = Action.create();
+promise.fulfilled = function(value){
+    var action = Action.create(value);
+    action.actionState.toFulfilled();
+    return action;
+};
+promise.rejected = function(value){
+    var action = Action.create(value);
+    action.actionState.toRejected();
+    return action;
+};
+promise.pending = function(){
+        var action = Action.create();
+        console.log("in pending"+JSON.stringify(action.actionState));
+        var fulfill = function(value){
+            if(!action.actionState.isPending())
+                return action;
+            
+            action.actionState.toFulfilled();
+            action.execute(value);
+            
+            return action;
+        };
+        var reject = function(value){
+                
+            if(!action.actionState.isPending())
+                return action;
+
+            action.actionState.toRejected();
+            action.execute(value);
+            
+            return action;
+        };
+        return { promise : action, 
+                fulfill : fulfill, 
+                reject : reject };
+};
+var fulfilled = promise.fulfilled;
+var rejected = promise.rejected;
+var pending = promise.pending;
 
 var dummy = { dummy: "dummy" }; // we fulfill or reject with this when we don't intend to test against it
 
