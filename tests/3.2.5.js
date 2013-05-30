@@ -105,151 +105,151 @@ describe("3.2.5: `then` may be called multiple times on the same promise.", func
         //     });
         // });
 
-        describe("results in multiple branching chains with their own fulfillment values", function () {
-            testFulfilled(dummy, function (promise, done) {
-                var semiDone = callbackAggregator(3, done);
+        // describe("results in multiple branching chains with their own fulfillment values", function () {
+        //     testFulfilled(dummy, function (promise, done) {
+        //         var semiDone = callbackAggregator(3, done);
 
-                promise.then(function () {
-                    return sentinel;
-                }).then(function (value) {
-                    assert.strictEqual(value, sentinel);
-                    //semiDone();
-                    done();
-                });
+        //         promise.then(function () {
+        //             return sentinel;
+        //         }).then(function (value) {
+        //             console.log("final then"+value);
+        //             assert.strictEqual(value, sentinel);
+        //             semiDone();
+        //         });
 
-                // promise.then(function () {
-                //     console.log("about to throw");
-                //     throw sentinel2;
-                // }).then(null, function (reason) {
-                //     assert.strictEqual(reason, sentinel2);
-                //     semiDone();
-                // });
+        //         promise.then(function () {
+        //             console.log("about to throw");
+        //             throw sentinel2;
+        //         }).then(null, function (reason) {
+        //             assert.strictEqual(reason, sentinel2);
+        //             semiDone();
+        //         });
 
-                // promise.then(function () {
-                //     return sentinel3;
-                // }).then(function (value) {
-                //     assert.strictEqual(value, sentinel3);
-                //     semiDone();
-                // });
-            });
-        });
+        //         promise.then(function () {
+        //             return sentinel3;
+        //         }).then(function (value) {
+        //             assert.strictEqual(value, sentinel3);
+        //             semiDone();
+        //         });
+        //     });
+        // });
 
-    //     describe("`onFulfilled` handlers are called in the original order", function () {
-    //         testFulfilled(dummy, function (promise, done) {
-    //             var handler1 = sinon.spy();
-    //             var handler2 = sinon.spy();
-    //             var handler3 = sinon.spy();
+        // describe("`onFulfilled` handlers are called in the original order", function () {
+        //     testFulfilled(dummy, function (promise, done) {
+        //         var handler1 = sinon.spy();
+        //         var handler2 = sinon.spy();
+        //         var handler3 = sinon.spy();
 
-    //             promise.then(handler1);
-    //             promise.then(handler2);
-    //             promise.then(handler3);
+        //         promise.then(handler1);
+        //         promise.then(handler2);
+        //         promise.then(handler3);
 
-    //             promise.then(function () {
-    //                 sinon.assert.callOrder(handler1, handler2, handler3);
-    //                 done();
-    //             });
-    //         });
+        //         promise.then(function () {
+        //             sinon.assert.callOrder(handler1, handler2, handler3);
+        //             done();
+        //         });
+        //     });
 
-    //         describe("even when one handler is added inside another handler", function () {
-    //             testFulfilled(dummy, function (promise, done) {
-    //                 var handler1 = sinon.spy();
-    //                 var handler2 = sinon.spy();
-    //                 var handler3 = sinon.spy();
+        //     describe("even when one handler is added inside another handler", function () {
+        //         testFulfilled(dummy, function (promise, done) {
+        //             var handler1 = sinon.spy();
+        //             var handler2 = sinon.spy();
+        //             var handler3 = sinon.spy();
 
-    //                 promise.then(function () {
-    //                     handler1();
-    //                     promise.then(handler3);
-    //                 });
-    //                 promise.then(handler2);
+        //             promise.then(function () {
+        //                 handler1();
+        //                 promise.then(handler3);
+        //             });
+        //             promise.then(handler2);
 
-    //                 promise.then(function () {
-    //                     // Give implementations a bit of extra time to flush their internal queue, if necessary.
-    //                     setTimeout(function () {
-    //                         sinon.assert.callOrder(handler1, handler2, handler3);
-    //                         done();
-    //                     }, 15);
-    //                 });
-    //             });
-    //         });
-    //     });
-    // });
+        //             promise.then(function () {
+        //                 // Give implementations a bit of extra time to flush their internal queue, if necessary.
+        //                 setTimeout(function () {
+        //                     sinon.assert.callOrder(handler1, handler2, handler3);
+        //                     done();
+        //                 }, 15);
+        //             });
+        //         });
+        //     });
+        // });
+    //});
 
     // describe("3.2.5.2: If/when `promise` is rejected, respective `onRejected` callbacks must execute in the order " +
     //          "of their originating calls to `then`.", function () {
-    //     describe("multiple boring rejection handlers", function () {
-    //         testRejected(sentinel, function (promise, done) {
-    //             var handler1 = sinon.stub().returns(other);
-    //             var handler2 = sinon.stub().returns(other);
-    //             var handler3 = sinon.stub().returns(other);
+        // describe("multiple boring rejection handlers", function () {
+        //     testRejected(sentinel, function (promise, done) {
+        //         var handler1 = sinon.stub().returns(other);
+        //         var handler2 = sinon.stub().returns(other);
+        //         var handler3 = sinon.stub().returns(other);
 
-    //             var spy = sinon.spy();
-    //             promise.then(spy, handler1);
-    //             promise.then(spy, handler2);
-    //             promise.then(spy, handler3);
+        //         var spy = sinon.spy();
+        //         promise.then(spy, handler1);
+        //         promise.then(spy, handler2);
+        //         promise.then(spy, handler3);
 
-    //             promise.then(null, function (reason) {
-    //                 assert.strictEqual(reason, sentinel);
+        //         promise.then(null, function (reason) {
+        //             assert.strictEqual(reason, sentinel);
 
-    //                 sinon.assert.calledWith(handler1, sinon.match.same(sentinel));
-    //                 sinon.assert.calledWith(handler2, sinon.match.same(sentinel));
-    //                 sinon.assert.calledWith(handler3, sinon.match.same(sentinel));
-    //                 sinon.assert.notCalled(spy);
+        //             sinon.assert.calledWith(handler1, sinon.match.same(sentinel));
+        //             sinon.assert.calledWith(handler2, sinon.match.same(sentinel));
+        //             sinon.assert.calledWith(handler3, sinon.match.same(sentinel));
+        //             sinon.assert.notCalled(spy);
 
-    //                 done();
-    //             });
-    //         });
-    //     });
+        //             done();
+        //         });
+        //     });
+        // });
 
-    //     describe("multiple rejection handlers, one of which throws", function () {
-    //         testRejected(sentinel, function (promise, done) {
-    //             var handler1 = sinon.stub().returns(other);
-    //             var handler2 = sinon.stub().throws(other);
-    //             var handler3 = sinon.stub().returns(other);
+        // describe("multiple rejection handlers, one of which throws", function () {
+        //     testRejected(sentinel, function (promise, done) {
+        //         var handler1 = sinon.stub().returns(other);
+        //         var handler2 = sinon.stub().throws(other);
+        //         var handler3 = sinon.stub().returns(other);
 
-    //             var spy = sinon.spy();
-    //             promise.then(spy, handler1);
-    //             promise.then(spy, handler2);
-    //             promise.then(spy, handler3);
+        //         var spy = sinon.spy();
+        //         promise.then(spy, handler1);
+        //         promise.then(spy, handler2);
+        //         promise.then(spy, handler3);
 
-    //             promise.then(null, function (reason) {
-    //                 assert.strictEqual(reason, sentinel);
+        //         promise.then(null, function (reason) {
+        //             assert.strictEqual(reason, sentinel);
 
-    //                 sinon.assert.calledWith(handler1, sinon.match.same(sentinel));
-    //                 sinon.assert.calledWith(handler2, sinon.match.same(sentinel));
-    //                 sinon.assert.calledWith(handler3, sinon.match.same(sentinel));
-    //                 sinon.assert.notCalled(spy);
+        //             sinon.assert.calledWith(handler1, sinon.match.same(sentinel));
+        //             sinon.assert.calledWith(handler2, sinon.match.same(sentinel));
+        //             sinon.assert.calledWith(handler3, sinon.match.same(sentinel));
+        //             sinon.assert.notCalled(spy);
 
-    //                 done();
-    //             });
-    //         });
-    //     });
+        //             done();
+        //         });
+        //     });
+        // });
 
-    //     describe("results in multiple branching chains with their own fulfillment values", function () {
-    //         testRejected(sentinel, function (promise, done) {
-    //             var semiDone = callbackAggregator(3, done);
+        describe("results in multiple branching chains with their own fulfillment values", function () {
+            testRejected(sentinel, function (promise, done) {
+                var semiDone = callbackAggregator(3, done);
 
-    //             promise.then(null, function () {
-    //                 return sentinel;
-    //             }).then(function (value) {
-    //                 assert.strictEqual(value, sentinel);
-    //                 semiDone();
-    //             });
+                promise.then(null, function () {
+                    return sentinel;
+                }).then(function (value) {
+                    assert.strictEqual(value, sentinel);
+                    semiDone();
+                });
 
-    //             promise.then(null, function () {
-    //                 throw sentinel2;
-    //             }).then(null, function (reason) {
-    //                 assert.strictEqual(reason, sentinel2);
-    //                 semiDone();
-    //             });
+                promise.then(null, function () {
+                    throw sentinel2;
+                }).then(null, function (reason) {
+                    assert.strictEqual(reason, sentinel2);
+                    semiDone();
+                });
 
-    //             promise.then(null, function () {
-    //                 return sentinel3;
-    //             }).then(function (value) {
-    //                 assert.strictEqual(value, sentinel3);
-    //                 semiDone();
-    //             });
-    //         });
-    //     });
+                promise.then(null, function () {
+                    return sentinel3;
+                }).then(function (value) {
+                    assert.strictEqual(value, sentinel3);
+                    semiDone();
+                });
+            });
+        });
 
     //     describe("`onRejected` handlers are called in the original order", function () {
     //         testRejected(dummy, function (promise, done) {

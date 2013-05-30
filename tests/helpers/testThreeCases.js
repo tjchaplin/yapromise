@@ -36,20 +36,20 @@ exports.testFulfilled = function (value, test) {
         test(fulfilled(value), done);
     });
 
-    // specify("immediately-fulfilled", function (done) {
-    //     var tuple = pending();
-    //     test(tuple.promise, done);
-    //     tuple.fulfill(value);
-    // });
+    specify("immediately-fulfilled", function (done) {
+        var tuple = pending();
+        test(tuple.promise, done);
+        tuple.fulfill(value);
+    });
 
-    // specify("eventually-fulfilled", function (done) {
-    //     var tuple = pending();
-    //     test(tuple.promise, done);
-    //     setTimeout(function () {
-    //         console.log("after timeout:"+value);
-    //         tuple.fulfill(value);
-    //     }, 50);
-    // });
+    specify("eventually-fulfilled", function (done) {
+        var tuple = pending();
+        test(tuple.promise, done);
+        setTimeout(function () {
+            console.log("after timeout:"+value);
+            tuple.fulfill(value);
+        }, 50);
+    });
 };
 
 exports.testRejected = function (reason, test) {
