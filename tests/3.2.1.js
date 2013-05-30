@@ -5,16 +5,17 @@ var Action = require("../lib/action.js");
 
 var promise = { 
     fulfilled : function(value){
-        var action = Action.create(value);
-        action.actionState.toFulfilled();
+        var action = Action.create();
+        action.onComplete(value);
         return action;
     },
     rejected : function(value){
-        var action = Action.create(value);
-        action.actionState.toRejected();
+        var action = Action.create();
+        action.onError(value);
         return action;
     }
 };
+
 var fulfilled = promise.fulfilled;
 var rejected = promise.rejected;
 

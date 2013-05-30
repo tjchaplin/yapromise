@@ -7,13 +7,13 @@ var testRejected = require("./helpers/testThreeCases").testRejected;
 var Action = require("../lib/action.js");
 var promise = Action.create();
 promise.fulfilled = function(value){
-    var action = Action.create(value);
-    action.actionState.toFulfilled();
+    var action = Action.create();
+    action.onComplete(value);
     return action;
 };
 promise.rejected = function(value){
-    var action = Action.create(value);
-    action.actionState.toRejected();
+    var action = Action.create();
+    action.onError(value);
     return action;
 };
 promise.pending = function(){
@@ -22,7 +22,7 @@ promise.pending = function(){
         var fulfill = function(value){
             if(!action.actionState.isPending())
                 return action;
-            
+
             action.actionState.toFulfilled();
             action.execute(value);
             
