@@ -161,6 +161,8 @@ describe("3.2.3: If `onRejected` is a function,", function () {
         });
 
         specify("trying to fulfill then immediately reject", function (done) {
+            var self = this;
+            self.done = done;
             var tuple = pending();
             var onFulfilledCalled = false;
 
@@ -170,7 +172,6 @@ describe("3.2.3: If `onRejected` is a function,", function () {
                 assert.strictEqual(onFulfilledCalled, false);
                 done();
             });
-
             tuple.fulfill(dummy);
             tuple.reject(dummy);
             setTimeout(done, 100);
@@ -191,6 +192,7 @@ describe("3.2.3: If `onRejected` is a function,", function () {
                 tuple.fulfill(dummy);
                 tuple.reject(dummy);
             }, 50);
+
             setTimeout(done, 100);
         });
 
